@@ -1,6 +1,6 @@
 cask "yunsftp" do
-  version "1.0.0"
-  sha256 "0c03cfc7da024993c4b9334e7eabf9739bf7622c363e70c0490864ced1dbd4b9"
+  version "1.1.1"
+  sha256 "362cc9a721abfecda6b21c0148efc6f37fbc968693e6441aaa487ddbea3cd1e4"
 
   url "https://github.com/dohyun-yun/yunsftp/releases/download/v#{version}/yunsftp-v#{version}-macos-arm64.dmg"
   name "yunsftp"
