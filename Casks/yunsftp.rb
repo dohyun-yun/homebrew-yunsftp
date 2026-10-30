@@ -24,7 +24,8 @@ cask "yunsftp" do
   ]
 
   caveats <<~EOS
-    Releases are not notarized yet. On first launch, right-click yunsftp.app and choose Open,
-    or install with: brew install --cask --no-quarantine yunsftp
+    Releases are ad-hoc signed (not notarized). On first launch, right-click yunsftp.app in
+    /Applications and choose Open, or run:
+      xattr -d com.apple.quarantine /Applications/yunsftp.app
   EOS
 end

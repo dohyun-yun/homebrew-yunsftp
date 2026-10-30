@@ -8,10 +8,10 @@ brew trust dohyun-yun/yunsftp     # newer Homebrew asks before loading third-par
 brew install --cask yunsftp
 ```
 
-Releases are not notarized yet, so macOS blocks the first launch. Either right-click `yunsftp.app` → Open once, or skip the quarantine flag at install time:
+Releases are ad-hoc signed (not notarized), so macOS blocks the first launch. Right-click `yunsftp.app` in `/Applications` → Open once, or clear the quarantine flag:
 
 ```bash
-brew install --cask --no-quarantine yunsftp
+xattr -d com.apple.quarantine /Applications/yunsftp.app
 ```
 
 Upgrade with `brew upgrade --cask yunsftp`. A scheduled workflow in this repository checks for new yunsftp releases every six hours and updates the cask; the yunsftp release workflow can also trigger it directly.
