@@ -13,18 +13,18 @@ cask "yunsftp" do
   end
 
   depends_on arch: :arm64
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "yunsftp.app"
+
+  zap trash: [
+    "~/Library/Caches/com.finsternis.yunsftp",
+    "~/Library/Preferences/com.finsternis.yunsftp.plist",
+    "~/Library/Saved Application State/com.finsternis.yunsftp.savedState",
+  ]
 
   caveats <<~EOS
     Releases are not notarized yet. On first launch, right-click yunsftp.app and choose Open,
     or install with: brew install --cask --no-quarantine yunsftp
   EOS
-
-  zap trash: [
-    "~/Library/Preferences/com.finsternis.yunsftp.plist",
-    "~/Library/Caches/com.finsternis.yunsftp",
-    "~/Library/Saved Application State/com.finsternis.yunsftp.savedState",
-  ]
 end

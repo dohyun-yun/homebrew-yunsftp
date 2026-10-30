@@ -4,6 +4,7 @@ Homebrew tap for [yunsftp](https://github.com/dohyun-yun/yunsftp), a native dual
 
 ```bash
 brew tap dohyun-yun/yunsftp
+brew trust dohyun-yun/yunsftp     # newer Homebrew asks before loading third-party taps
 brew install --cask yunsftp
 ```
 
