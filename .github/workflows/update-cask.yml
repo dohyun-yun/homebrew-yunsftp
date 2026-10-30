@@ -1,0 +1,49 @@
+name: Update cask
+
+# Keeps Casks/yunsftp.rb in sync with the latest yunsftp release. Runs on a schedule and on demand;
+# pushes with the repository's own GITHUB_TOKEN, so no personal access token is needed anywhere.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve latest release
+        id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(gh release view --repo dohyun-yun/yunsftp --json tagName --jq .tagName)
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Update version and sha256
+        id: bump
+        run: |
+          TAG="${{ steps.latest.outputs.tag }}"
+          VERSION="${{ steps.latest.outputs.version }}"
+          CURRENT=$(sed -n 's/^  version "\(.*\)"/\1/p' Casks/yunsftp.rb)
+          if [ "$CURRENT" = "$VERSION" ]; then
+            echo "already at $VERSION"; echo "changed=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          URL="https://github.com/dohyun-yun/yunsftp/releases/download/${TAG}/yunsftp-${TAG}-macos-arm64.dmg"
+          SHA=$(curl -fsSL "$URL" | shasum -a 256 | cut -d' ' -f1)
+          [ -n "$SHA" ] || { echo "download failed: $URL"; exit 1; }
+          sed -i -e "s/^  version \".*\"/  version \"${VERSION}\"/" -e "s/^  sha256 \".*\"/  sha256 \"${SHA}\"/" Casks/yunsftp.rb
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -am "yunsftp ${{ steps.latest.outputs.version }}"
+          git push

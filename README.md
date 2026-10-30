@@ -14,4 +14,4 @@ Releases are not notarized yet, so macOS blocks the first launch. Either right-c
 brew install --cask --no-quarantine yunsftp
 ```
 
-Upgrade with `brew upgrade --cask yunsftp`. The cask is updated automatically when a new yunsftp release is published.
+Upgrade with `brew upgrade --cask yunsftp`. A scheduled workflow in this repository checks for new yunsftp releases every six hours and updates the cask; the yunsftp release workflow can also trigger it directly.
